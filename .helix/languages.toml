@@ -1,0 +1,33 @@
+[language-server.harper-ls]
+command = "harper-ls"
+args = ["--stdio"]
+
+[[language]]
+name = "typst"
+language-servers = [ "tinymist", "harper-ls" ]
+
+[language-server.harper-ls.config.harper-ls]
+isolateEnglish = true
+
+[language-server.harper-ls.config.harper-ls.linters]
+SpelledNumbers = true
+BoringWords = true
+
+[[language]]
+name = "rust"
+language-servers = [ "rust-analyzer" ]
+auto-format = true
+
+roots = [
+  "Cargo.toml",
+  "Cargo.lock"
+]
+
+[language-server.rust-analyzer.config]
+inlayHints.parameterHints.enable = false
+diagnostics.experimental.enable = true
+diagnostics.styleLints.enable = true
+
+[[language]]
+name = "bibtex"
+auto-format = true

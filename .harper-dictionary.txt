@@ -1,0 +1,6 @@
+GKR
+Jakobsen
+Rasmus
+multilinear
+prover
+sumcheck
