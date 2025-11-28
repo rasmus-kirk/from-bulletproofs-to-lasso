@@ -3,22 +3,23 @@
   system,
   pkgs,
 }:
-  let report = pkgs.buildTypstDocument {
-    name = "report";
-    src = ./.;
-    typstEnv = p: with p; [
-      gruvy_2_1_0
-      zebraw_0_5_5
-      fletcher_0_5_8
-      xarrow_0_3_1
-      theorion_0_4_0
-      oxifmt_0_2_1 # Nixpkgs support for typst is sort of janky
-    ];
-    creationTimestamp = self.lastModified;
-    fonts = [
-      pkgs.roboto
-    ];
-  };
+  let
+    report = pkgs.buildTypstDocument {
+      name = "report";
+      src = ./.;
+      typstEnv = p: with p; [
+        gruvy_2_1_0
+        zebraw_0_6_0
+        fletcher_0_5_8
+        xarrow_0_3_1
+        theorion_0_4_1
+        oxifmt_0_2_1 # Nixpkgs support for typst is sort of janky
+      ];
+      creationTimestamp = self.lastModified;
+      fonts = [
+        pkgs.roboto
+      ];
+    };
   # harper = pkgs.rustPlatform.buildRustPackage rec {
   #   pname = "harper-test-program";
   #   version = "0.34.1";

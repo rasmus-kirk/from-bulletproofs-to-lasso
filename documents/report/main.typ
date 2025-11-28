@@ -1,9 +1,9 @@
 #import "./lib/template/lib.typ": *
 #import "@preview/gruvy:2.1.0": gruvbox, theme-colors, colors
-#import "@preview/zebraw:0.5.5": *
+#import "@preview/zebraw:0.6.0": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import "@preview/xarrow:0.3.1": xarrow, xarrowSquiggly, xarrowTwoHead
-#import "@preview/theorion:0.4.0": *
+#import "@preview/theorion:0.4.1": *
 #import cosmos.clouds: *
 #import cosmos.clouds: render-fn as render-fn-2
 #show: show-theorion
@@ -42,14 +42,14 @@
 #let theorem = theorem.with(fill: theme.muted.blue.lighten(80%))
 #let lemma = lemma.with(fill: theme-colors.dark.soft.strong.blue.lighten(80%))
 #let (example-counter, example-box, example, show-example) = make-frame(
-  "theorem",
+  "definition",
   theorion-i18n-map.at("example"),
   counter: none,
   render: render-fn-2.with(fill: theme.bg0.lighten(30%)),
 )
 #let todo-box = note-box.with(
   fill: theme.strong.aqua,
-  title: "To-do",
+  title: "To-Do",
   icon-name: "pencil",
 )
 
@@ -86,72 +86,74 @@ $ H := sum_(b_1 in bits) sum_(b_2 in bits) dots sum_(b_v in bits) g(b_1, dots, b
   #set text(10pt)
   #let w = 0.7
   #diagram({
-    let (A, B) = ((0, 0), (3, 0))
-    node(A, text(size: 12pt, weight: "black", "Prover"))
-    node(B, text(size: 12pt, weight: "black", "Verifier"))
+    let h = 0.7
+    let (P, M, V) = ((0, 0), (1.5, 0), (3, 0))
+
+    node(P, text(size: 12pt, weight: "black", "Prover"))
+    node(V, text(size: 12pt, weight: "black", "Verifier"))
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
     // -------------------- Round 1 -------------------- //
-    let (A, B, C) = ((0, w), (1.5, w), (3, w))
-    node(B, text(size: 12pt, weight: "black", "Round 1"))
-    edge(A, B, "=")
-    edge(B, C, "=")
+    node(M, $#text(size: 12pt, weight: "black", $"Round" 1$)$)
+    edge(P, M, "=")
+    edge(M, V, "=")
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 2*w), (3, 2*w))
-    node(A, move(dy: .35em, $ g_1(X) := limits(sum)_(x_(2:v) in bits^(v-1)) g(X, x_(2:v))$))
-    node(B, $ H meq g_1(0) + g_1(1)$)
-    edge(A, B, "->", $H, g_1(X)$)
+    node(P, move(dy: .35em, $ g_1(X) := limits(sum)_(x_(2:v) in bits^(v-1)) g(X, x_(2:v))$))
+    node(V, $ H meq g_1(0) + g_1(1)$)
+    edge(P, V, "->", $H, g_1(X)$)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 3*w), (3, 3*w))
-    node(A, )
-    node(B, $ deg(g_1) meq deg_1(g) $)
+    node(P, )
+    node(V, $ deg(g_1) meq deg_1(g) $)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 4*w), (3, 4*w))
-    node(A, "")
-    node(B, $ r_1 inrand Fb $)
-    edge(B, A, "->", $r_1$)
+    node(P, "")
+    node(V, $ r_1 inrand Fb $)
+    edge(V, P, "->", $r_1$)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
     // -------------------- Round j -------------------- //
-    let (A, B, C) = ((0, 5*w), (1.5, 5*w), (3, 5*w))
-    node(B, text(size: 12pt, weight: "black", "Round j"))
-    edge(A, B, "=")
-    edge(B, C, "=")
+    node(M, $#text(size: 12pt, weight: "black", $"Round" j in [2..d]$)$)
+    edge(P, M, "=")
+    edge(M, V, "=")
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 6*w), (3, 6*w))
-    node(A, move(dy: .35em, $ g_(j)(X) := limits(sum)_(x_(j+1:v) in bits^(v-j)) g(r_(1:j-1), X, x_(j+1:v))$))
-    node(B, $ g_(j-1)(r_(j-1)) meq g_(j)(0) + g_(j)(1)$)
-    edge(A, B, "->", $g_(j)(X)$)
+    node(P, move(dy: .35em, $ g_(j)(X) := limits(sum)_(x_(j+1:v) in bits^(v-j)) g(r_(1:j-1), X, x_(j+1:v))$))
+    node(V, $ g_(j-1)(r_(j-1)) meq g_(j)(0) + g_(j)(1)$)
+    edge(P, V, "->", $g_(j)(X)$)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 7*w), (3, 7*w))
-    node(A, )
-    node(B, $ deg(g_j) meq deg_(j)(g) $)
+    node(P, )
+    node(V, $ deg(g_j) meq deg_(j)(g) $)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 8*w), (3, 8*w))
-    node(A, "")
-    node(B, $ r_j inrand Fb $)
-    edge(B, A, "->", $r_j$)
+    node(P, "")
+    node(V, $ r_j inrand Fb $)
+    edge(V, P, "->", $r_j$)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
     // -------------------- Round v -------------------- //
-    let (A, B, C) = ((0, 9*w), (1.5, 9*w), (3, 9*w))
-    node(B, text(size: 12pt, weight: "black", "Round v"))
-    edge(A, B, "=")
-    edge(B, C, "=")
+    node(M, $#text(size: 12pt, weight: "black", $"Round" v$)$)
+    edge(P, M, "=")
+    edge(M, V, "=")
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 10*w), (3, 10*w))
-    node(A, move(dy: .35em, $ g_(v)(X) := g(r_(1:v-1), X)$))
-    node(B, $ g_(v-1)(r_(j-1)) meq g_(v)(0) + g_(v)(1)$)
-    edge(A, B, "->", $g_(v)(X)$)
+    node(P, move(dy: .35em, $ g_(v)(X) := g(r_(1:v-1), X)$))
+    node(V, $ g_(v-1)(r_(j-1)) meq g_(v)(0) + g_(v)(1)$)
+    edge(P, V, "->", $g_(v)(X)$)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 11*w), (3, 11*w))
-    node(A, )
-    node(B, $ deg(g_v) meq deg_(v)(g) $)
+    node(P, )
+    node(V, $ deg(g_v) meq deg_(v)(g) $)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 12*w), (3, 12*w))
-    node(A, "")
-    node(B, $ r_v inrand Fb $)
+    node(P, "")
+    node(V, $ r_v inrand Fb $)
+    P.at(1) += h; M.at(1) += h; V.at(1) += h; 
 
-    let (A, B) = ((0, 13*w), (3, 13*w))
-    node(A, "")
-    node(B, $ g_(v)(r_v) meq g(r_(1:v)) $)
+    node(P, "")
+    node(V, $ g_(v)(r_v) meq g(r_(1:v)) $)
   })
 ]
 
@@ -264,10 +266,6 @@ $W_(i)$ in a form that lets us use sumcheck:
 
 $ tilde(W)_(i)(a) = sum_(b,c in bits^(k_(i+1))) tilde("add")_(i)(a,b,c)(tilde(W)_(i+1)(b) + tilde(W)_(i+1)(c)) + tilde("mult")_(i)(a,b,c) dot tilde(W)_(i+1)(b) dot tilde(W)_(i+1)(c) $
 
-#todo-box[
-  What is the degree of each $W_(i)$? Is it important?
-]
-
 Assume that the prover convinces the verifier that some polynomial $D(X_1,
 dots, X_ell) = tilde(W)_0$, meaning that the above holds recursively all
 the way to layer $d$. Then the verifier can confirm that the evaluations of
@@ -283,68 +281,206 @@ $ tilde(f)^((0))_(r_0)(b_0, c_0) = tilde("add")_(0)(r_0,b_0,c_0)(tilde(W)_1(b_0)
 Which, if this succeeds, the verifier will be convinced that $D(X_1, dots,
 X_ell) = W_0(X_1, dots, X_ell)$ as desired. But in the final round of the sumcheck
 protocol, the verifier must be able to evaluate the above polynomial at a
-random point. The functions $tilde("add")$ and $tilde("mul")$ are part of
+random point. The functions $tilde("add")_0$ and $tilde("mul")_0$ are part of
 the circuit description, and can thus be computed by the verifier without
 help from the prover. But the verifier also needs to evaluate $tilde(W_1)$
 at two random points $b', c' inrand Fb$ corresponding to $b_0, c_0$. In principle,
 we could run the sumcheck protocol twice then, on the polynomials:
 
 $
-  tilde(f)^((1))_(b')(b_1, c_1) &= tilde("add")_(0)(b',b_1,c_1)(tilde(W)_1(b_1) + tilde(W)_1(c_1)) + tilde("mult")_(0)(b',b_0,c_1) dot tilde(W)_1(b_0) dot tilde(W)_1(c_1) \
-  tilde(f)^((1))_(c')(b_1, c_1) &= tilde("add")_(0)(c',b_1,c_1)(tilde(W)_1(b_1) + tilde(W)_1(c_1)) + tilde("mult")_(0)(c',b_0,c_0) dot tilde(W)_1(b_0) dot tilde(W)_1(c_0)
-$
+  tilde(f)^((1))_(b')(b_1, c_1) &= tilde("add")_(1)(b',b_1,c_1)(tilde(W)_2(b_1) + tilde(W)_2(c_1)) + tilde("mult")_(1)(b',b_1,c_1) dot tilde(W)_2(b_1) dot tilde(W)_2(c_1) \
+  tilde(f)^((1))_(c')(b_1, c_1) &= tilde("add")_(1)(c',b_1,c_1)(tilde(W)_2(b_1) + tilde(W)_2(c_1)) + tilde("mult")_(1)(c',b_1,c_1) dot tilde(W)_2(b_1) dot tilde(W)_2(c_1)
+$ <eq:two-fs>
 
 But this would result in an exponential amount of sumchecks in the depth
-$d$. Instead we can reduce two checks into one using a linear combination. For
-any polynomial $p(X)$:
+$d$. Instead, we can reduce two checks into one, using a linear combination.
 
-bread text
-bread text
+== Combining two claims to one
 
-$ tilde(f)^((i))_(r_i)(b, c) = sum_(b,c in bits^(k_(i+1))) tilde("add")_(i)(r_i,b,c)(tilde(W)_(i+1)(b) + tilde(W)_(i+1)(c)) + tilde("mult")_(i)(r_i,b,c) dot tilde(W)_(i+1)(b) dot tilde(W)_(i+1)(c) $
+Suppose we were to apply sumcheck to the following polynomial instead:
 
-After which point, the verifier will be convinced that $tilde(f)^((i))_(r_i)(b,
-c)$ accurately represents the gate values from layer $i$.
+$
+  tilde(q)_(1)(b', c') = tilde(W)_(1)(b') + alpha dot tilde(W)_(1)(c')
+$
 
-If the prover and verifier run sumcheck on the above equation, the verifier will then be convinced that $$
+Which can be derived as:
 
-= Other
+$
+  tilde(q)_1(b', c') &= &&(sum_(b,c in bits^(k_(1))) tilde("add")_(0)(b',b,c)(tilde(W)_(1)(b) + tilde(W)_(1)(c)) + tilde("mul")_(0)(b',b,c) dot tilde(W)_(1)(b) dot tilde(W)_(1)(c)) + \
+                     &  &&alpha dot (sum_(b,c in bits^(k_(1))) tilde("add")_(0)(c',b,c)(tilde(W)_(1)(b) + tilde(W)_(1)(c)) + tilde("mul")_(0)(c',b,c) dot tilde(W)_(1)(b) dot tilde(W)_(1)(c)) \
+                     &= &&sum_(b,c in bits^(k_(1))) tilde("add")_(0)(b',b,c)(tilde(W)_(1)(b) + tilde(W)_(1)(c)) + tilde("mul")_(0)(b',b,c) dot tilde(W)_(1)(b) dot tilde(W)_(1)(c) + \
+                     &  &&alpha dot tilde("add")_(0)(c',b,c)(tilde(W)_(1)(b) + tilde(W)_(1)(c)) + alpha dot tilde("mul")_(0)(c',b,c) dot tilde(W)_(1)(b) dot tilde(W)_(1)(c) \
+                     &= &&sum_(b,c in bits^(k_(1))) (tilde("add")_(0)(b',b,c) + alpha dot tilde("add")_(0)(c',b,c))(tilde(W)_(1)(b) + tilde(W)_(1)(c)) \
+                     &  &&(tilde("mul")_(0)(b',b,c) + alpha dot tilde("mul")_(0)(c',b,c))(tilde(W)_(1)(b) dot tilde(W)_(1)(c))
+$ <eq:combined-poly>
 
-#lemma[
-  #set math.equation(numbering: none)
-  $ tilde(W)(z) = sum_(b,c in bits^(k_(i+1))) tilde("add")_(i)(z,b,c)(tilde(W)_(i+1)(b) + tilde(W)_(i+1)(c)) + tilde("mult")_(i)(z,b,c) dot tilde(W)_(i+1)(b) dot tilde(W)_(i+1)(c) $
-
-  Lemma 4.7 in the book.
-]
-
-#lemma[
-  #set math.equation(numbering: none)
-  $ h(a_1, a_2) := sum_(b_1, c_1 in bits^k_(i+1)) g(a_1, a_2, b_1, c_1) $
-
-  where
-
-  $ tilde(g)(a_1, a_2, b_1, c_1) = &tilde("add")_(i)(a_1,b_1,c_1)(tilde(W)'_(i+1)(b_1, a_2) + tilde(W)'_(i+1)(c_1, a_2)) + \
-                                   &tilde("mult")_(i)(a_1,b_1,c_1) dot tilde(W)'_(i+1)(b_1, a_2) dot tilde(W)_(i+1)(c_1, a_2) $
-]
+The below Lemma shows how this will help the prover-verifier pair in showing
+that $v_(b') = tilde(W)_1(b') and v_(b') = tilde(W)_1(c')$, thus enabling
+the verifier to compute $tilde(f)_(r_0)^((0))(b_0, c_0)$:
 
 #lemma[
   #set math.equation(numbering: none)
-  $ tilde(W)(z) := sum_((a_1, a_2, b_1, c_1) in bits^(k_(i+1) + b + 2k_(i+1))) g^((i))_(z)(a_1, a_2, b_1, c_1) $
-
-  where
+  For a polynomial $p(X_1, ..., X_k)$, if a prover wants to convince a verifier
+  of two claims $v_1 = p(r_1), v_2 = p(r_2)$, then they can reduce this to a
+  single claim over a polynomial $q(r_1, r_2)$:
 
   $
-  tilde(g)^((i))_(z)(a_1, a_2, b_1, c_1) = tilde(beta)_(k'_i)(z, (a_1, a_2)) dot tilde(g)(a_1, a_2, b_1, c_1)
+    q(X_1, .., X_(2k)) := p(X_1, ..., X_k) + alpha dot p(X_(k+1), ..., X_(2k))
   $
+
+  The verifier can then check that $q(r_1, r_2) = p(r_1) + alpha dot p(r_2)$.
+  The claim that $v_1 = p(r_1) and v_2 = p(r_2)$ will then hold except with
+  negligible probability, given that $q(X_1, ..., X_(2k))$ is defined as above.
 ]
 
-How do we get $S_(i+1)^2$ terms in the first lemma and $S'_(i+1) dot S_(i+1)$ in the second lemma?
+#proof[
+  #set math.equation(numbering: none)
+  If $q(r_1, r_2) = p(r_1) + alpha dot p(r_2)$ but the claim does not hold,
+  i.e. $v_1 != p(r_1), v_2 != p(r_2)$, then that means that the univariate
+  non-zero polynomial:
 
-- Circuit $C'$ with depth $d$ and size $B dot S$
-- With $B = 2^b$ copies of sub-circuit $C$ with depth $d$ and size $S$
-- $S_i = 2^(k_i)$
-- $S'_i = 2^(k'_i) = 2^(b + k_i)$
+  $ e(X) = q(r_1, r_2) - p(r_1) + X dot p(r_2) $
 
-#todo-box[
-  Drop this line of thought and use a generally linear prover instead (2019)
-]
+  Evaluated to zero, which by the Schwarz-Zippel Lemma, has probability:
+
+  $ Pr[e(alpha) = 0 | e(X) != 0] = frac(d, |Fb|) $
+
+  In this case $d = 1$ which is negligible in the size of the field.
+] <lem:multiple-evals-same-poly>
+
+In the GKR protocol, running sumcheck on @eq:combined-poly convinces
+the verifier that $tilde(Q)_(i)(b', c') = tilde(W)_(i)(b') + alpha dot
+tilde(W)_(i)(c')$, which means that the verifier knows that $tilde(Q)_(i)(X)$
+is defined as in <lem:multiple-evals-same-poly> and they know the evaluation of
+$tilde(Q)_(i)(X)$, $tilde(Q)_(i)(b', c')$. The verifier can then verify that
+$v_(b') = tilde(W)_(i)(b')$ and $v_(c') = tilde(W)_(i)(c')$ by additionally
+checking that $tilde(Q)_(i)(b', c') = v_(b') + alpha dot v_(c')$.
+
+With $v_(b')$ and $v_(c')$ the verifier can compute the evaluation of
+$tilde(f)_(r_0)^((0))(b', c')$:
+
+$ tilde(f)^((0))_(r_0)(b', c') = tilde("add")_(0)(r_0,b',c')(v_(b') + v_(c')) + tilde("mult")_(0)(r_0,b',c') dot v_(b') dot v_(c') $
+
+It should already now be apparent that we can repeat this procedure, all
+the way to the input layer $d$.
+
+== Completing the protocol
+
+In the input layer, the final check in the sumcheck protocol requires the
+verifier to evaluate the polynomial:
+
+$ tilde(f)^((d-1))_(r_(d-1))(b', c') = tilde("add")_(d-1)(r_(d-1),b',c')(tilde(W)_(d)(b') + tilde(W)_(d)(c')) + tilde("mult")_(d-1)(r_(d-1),b',c') dot tilde(W)_(d)(b') dot tilde(W)_(d)(c') $
+
+The polynomials $tilde("add")_(d-1)$ and $tilde("mul")_(d-1)$ can be
+evaluated as usual. The polynomial $tilde(W)_(d)(b')$ corresponds to the
+values of the input layer $vec(w)$. Since the verifier knows $vec(w)$ they
+can compute the multilinear extension of $vec(w)$ corresponding to $W_d(X,
+..., X_(k_d))$. From this the verifier can compute $tilde(W)_(d)(b'),
+tilde(W)_(d)(c')$ and thus the evaluation of $tilde(f)^((d-1))_(r_(d-1))(b',
+c')$.
+
+The entire protocol can be seen below:
+
+== Efficiency
+
+= Spark
+
+Before introducing Spark, we'll first introduce the primary argument that
+SPARK builds on, the *PLACEHOLDER*.
+
+// #lemma[
+//   #set math.equation(numbering: none)
+  
+//   If we at any point in an interactive protocol, need evaluations of $k$
+//   polynomials at a single random point ($beta$), we can reduce $k$ polynomial
+//   evaluations to just one. A protocol for this is sketched out below:
+
+//   #align(center)[
+//     #set math.equation(numbering: none)
+//     #set text(10pt)
+//     #diagram({
+//       let height = 0.7
+//       let (P, V) = ((0, 0), (3, 0))
+
+//       node(P, $#text(size: 12pt, $#text(size: 12pt, weight: "black", "Prover") #h(0em) (vec(p) in Fb^(k)_(<= d)[X])$)$)
+//       node(V, text(size: 12pt, weight: "black", "Verifier"))
+//       P.at(1) += height; V.at(1) += height; 
+
+//       node(P)
+//       node(V, $alpha inrand Fb$)
+//       edge(P, V, "->", $vec(p)$)
+//       P.at(1) += height; V.at(1) += height; 
+
+//       node(P, $ q(X) = sum^(k)_(i=1) alpha^(i-1) dot p_(i)(X) $)
+//       node(V)
+//       edge(V, P, "->", $alpha$)
+//       P.at(1) += height; V.at(1) += height; 
+
+//       node(P)
+//       node(V, $ beta inrand Fb $)
+//       edge(P, V, "->", $q(X)$)
+//       P.at(1) += height; V.at(1) += height; 
+
+//       node(P, $forall i in [k] : v_k = p_(k)(beta)$)
+//       node(V, $q(beta) meq sum^(k)_(i=1) alpha^(i-1) dot v_(i)(X)$)
+//       edge(P, V, "->", $vec(v)$)
+//       P.at(1) += height; V.at(1) += height; 
+
+//       node(P)
+//       node(V, $forall i in [k] : deg(p_(k)(X)) <= d$)
+//       P.at(1) += height; V.at(1) += height; 
+
+//       node(P)
+//       node(V, $deg(q(X)) <= d$)
+//     })
+//   ]
+
+//   So the prover sends the polynomials $vec(p)$ to the verifier, and the verifier
+//   responds with a challenge $alpha$. Then the prover constructs $q(X)$ from
+//   $vec(p)$ and $alpha$ and send these to the verifier, to which the verifier
+//   responds with yet another challenge $beta$. The prover finally evaluates
+//   and sends all the $k$ polynomials in $vec(p)$ to the verifier which makes
+//   their checks:
+
+//   $ q(beta) meq sum^(k)_(i=1) alpha^(i-1) dot v_(i)(X), #h(2em) forall i in [1..k] : deg(p_(k)(X)) <= d, #h(2em) deg(q(X)) <= d $
+
+//   Now, if the above checks passes the verifier will be convinced that
+//   $p_k(beta) = v_k$ with negligible soundness error and by leveraging only
+//   a single polynomial evaluation.
+
+//   *Completeness:*
+
+//   It's easy to see that, given an honest prover, the degree bounds will always
+//   pass the verifier's check and that definitionally $q(beta) = sum^(k)_(i=1)
+//   alpha^(i-1) dot v_(i)(X)$. Giving us perfect completeness.
+
+//   *Soundness:*
+
+//   Soundness follows from Schwartz-Zippel. If you view the polynomial $q(X)$
+//   as a univariate polynomial variable in $alpha$, with $v_(i)(X)$ being
+//   the constants:
+
+//   $ q(alpha) meq sum^(k)_(i=1) alpha^(i-1) dot v_(i)(X) $
+
+//   Then if the evaluation of $q'(alpha) = sum^(k)_(i=1) alpha^(i-1) dot
+//   v_(i)(X)$ at the same $alpha$ are equal, then they are the same polynomial
+//   by Schwartz-Zippel.
+// ] <lem:poly-batch>
+
+// We can now using @lem:poly-batch reduce the two polynomials in
+// @eq:two-fs to a single polynomial $tilde(q)^((1))(b_1, c_1)$:
+
+// $
+//   tilde(q)^((1))(b_1, c_1) := tilde(f)^((1))_(b')(b_1, c_1) + alpha dot tilde(f)^((1))_(c')(b_1, c_1)
+// $
+
+// We can now do the same for each layer $i$ until we reach the input layer
+// #footnote[Remember: GKR starts from the output layer and moves towards the
+// input layer.]. At the input layer
+
+
+// $
+//   tilde(q)^((1))(b_1, c_1) &:= tilde(f)^((1))_(b')(b_1, c_1) + alpha dot tilde(f)^((1))_(c')(b_1, c_1) \
+//                            &= tilde("add")_(1)(b',b_1,c_1)(tilde(W)_2(b_1) + tilde(W)_2(c_1)) + tilde("mult")_(1)(b',b_1,c_1) dot tilde(W)_2(b_1) dot tilde(W)_2(c_1) \
+//                            &+tilde("add")_(1)(c',b_1,c_1)(tilde(W)_2(b_1) + tilde(W)_2(c_1)) + tilde("mult")_(1)(c',b_1,c_1) dot tilde(W)_2(b_1) dot tilde(W)_2(c_1) \
+// $
